@@ -17,10 +17,6 @@ from fastapi.responses import HTMLResponse
 import google.generativeai as genai
 from config.setting import settings
 
-
-API_KEY = "AIzaSyAa2ROY5aED-4fP36aUTtKjfuQLSX3U2OA"
-URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={API_KEY}"
-
 html = """
 <!DOCTYPE html>
 <html>
