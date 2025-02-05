@@ -10,4 +10,4 @@ RUN poetry install --no-root
 
 EXPOSE 8000
 
-CMD ["python", "gemini_api.py"]
+CMD ["poetry", "run", "python", "gemini_api.py"]
