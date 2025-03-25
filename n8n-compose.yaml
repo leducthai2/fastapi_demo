@@ -1,0 +1,53 @@
+name: thai-test-n8n
+
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    restart: always
+    ports:
+      - "127.0.0.1:5678:5678"
+    environment:
+      - GENERIC_TIMEZONE="Asia/Ho_Chi_Minh"
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+  db:
+    image: postgres:15.2  # Use the PostgreSQL version 15.2.0
+    container_name: postgres_db  # Name of the container
+    environment:
+      POSTGRES_DB: mydatabase  # Name of the database to create
+      POSTGRES_USER: myuser     # Username for the database
+      POSTGRES_PASSWORD: mypassword  # Password for the database user
+    ports:
+      - "5433:5432"  # Expose PostgreSQL port
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persist data
+    networks:
+      - geniai_net
+  
+  backend_service:
+    build: .
+    ports:
+      - "8001:8001"
+
+  qdrant_service:
+    image: qdrant/qdrant:latest
+    restart: always
+    ports:
+      - 6333:6333
+      - 6334:6334
+    expose:
+      - 6335
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+volumes:
+  traefik_data:
+  n8n_data:
+  postgres_data:
+  qdrant_data:
+
+networks:
+  geniai_net:
+    external: true
+    name: genie-server_default

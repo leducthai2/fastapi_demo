@@ -6,5 +6,8 @@ class Settings(BaseSettings):
   gemini_key: str
   gemini_version: str
 
+  backlog_base_url: str
+  backlog_user_apikey: str
+
 
 settings = Settings()

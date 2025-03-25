@@ -64,7 +64,11 @@ dependencies = [
     "uvicorn (==0.34.0)",
     "uvloop (==0.21.0)",
     "watchfiles (==1.0.4)",
-    "websockets (==14.2)"
+    "websockets (==14.2)",
+    "psycopg2-binary (>=2.9.10,<3.0.0)",
+    "firebase-admin (>=6.6.0,<7.0.0)",
+    "sentence-transformers (>=3.4.1,<4.0.0)",
+    "qdrant-client (>=1.13.2,<2.0.0)"
 ]
 
 

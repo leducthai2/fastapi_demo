@@ -15,7 +15,11 @@ from models.models import Item
 import uvicorn
 from fastapi.responses import HTMLResponse
 import google.generativeai as genai
+
 from config.setting import settings
+from database.connection import fetch_all_data_from_table
+from firebase.post import reset_projects_collection
+from qdrant.main import ProjectCollectionHelper
 
 html = """
 <!DOCTYPE html>
@@ -137,7 +141,24 @@ async def send_prompt(prompt_item: Item):
     response = model.generate_content(prompt)
     return {"response": response.text}
 
+@app.post("/upsert/firebase")
+async def send_prompt():
+    try: 
+        records = await fetch_all_data_from_table(table_name="projects")
+        await reset_projects_collection(records)
+
+        # update qdrant
+        p = ProjectCollectionHelper("qdrant_service", 6333)
+
+        await p.upload_points(records)
+        return {"msg": "succeed"}
+    except Exception as e:
+        raise e
+
+
+
+    
 
 if __name__ == "__main__":
-   uvicorn.run("gemini_api:app", host="0.0.0.0", port=8000, reload=True)
+   uvicorn.run("gemini_api:app", host="0.0.0.0", port=8001, reload=True)
 
